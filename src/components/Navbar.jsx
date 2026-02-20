@@ -1,17 +1,20 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useBudget } from "../contexts/BudgetContext";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const { budgetMode, setBudgetMode } = useBudget();
+  const { budgetMode, setBudgetMode, maxPrice, setMaxPrice } = useBudget();
 
+  //funzione onclick bottone
   function buttonSetter() {
     setBudgetMode((budgetMode) => !budgetMode);
   }
 
-  function buttonSubmit(e) {
-    e.preventDefault();
-  }
+  useEffect(() => {
+    if (!budgetMode) {
+      setMaxPrice("");
+    }
+  }, [budgetMode]);
 
   return (
     <header className="bg-light mb-3">
@@ -45,10 +48,13 @@ export default function Navbar() {
                 </NavLink>
               </div>
 
-              <form onSubmit={buttonSubmit} className="d-flex ms-auto gap-2">
-                <input type="number" />
-                <button onClick={buttonSetter} className={` btn ${budgetMode ? "btn-outline-success" : "btn-outline-danger"}`}>
-                  {budgetMode ? "Modalità Budget Attiva" : "Modalità Budget Disattiva"}
+              <form onSubmit={(e) => e.preventDefault()} className="d-flex ms-auto gap-2">
+                <label className="form-label" htmlFor="filtro-prezzo">
+                  Filtra per prezzo
+                </label>
+                <input id="filtro-prezzo" type="number" className="form-control" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+                <button onClick={buttonSetter} className={` btn ${budgetMode ? "btn-outline-success" : "btn-success"}`}>
+                  {budgetMode ? "Torna indietro" : "Cerca prodotti"}
                 </button>
               </form>
             </div>

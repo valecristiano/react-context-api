@@ -10,7 +10,7 @@ export default function ProdottiPage() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const { budgetMode } = useBudget();
+  const { budgetMode, maxPrice } = useBudget();
 
   useEffect(() => {
     setIsLoading(true);
@@ -22,7 +22,7 @@ export default function ProdottiPage() {
       });
   }, []);
 
-  const budgetProductList = budgetMode ? productList.filter((product) => product.price <= 30) : productList;
+  const budgetProductList = budgetMode ? productList.filter((product) => product.price <= maxPrice) : productList;
 
   if (isLoading)
     return (
