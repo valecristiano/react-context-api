@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useBudget } from "../contexts/BudgetContext";
 
 const productsApi = "https://fakestoreapi.com/products";
 
@@ -8,6 +9,8 @@ export default function ProdottiPage() {
   const [productList, setProductList] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const { budgetMode } = useBudget();
 
   useEffect(() => {
     setIsLoading(true);
@@ -18,6 +21,9 @@ export default function ProdottiPage() {
         setIsLoading(false);
       });
   }, []);
+
+  const budgetProductList = budgetMode ? productList.filter((product) => product.price <= 30) : productList;
+
   if (isLoading)
     return (
       <div className="container layover">
@@ -31,7 +37,7 @@ export default function ProdottiPage() {
   return (
     <section className="container">
       <div className="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4">
-        {productList.map((product) => (
+        {budgetProductList.map((product) => (
           <div key={product.id} className="col">
             <Link to={"/prodotti/" + product.id}>
               <div className="card-wrapper card h-100">
