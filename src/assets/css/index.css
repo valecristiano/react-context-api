@@ -1,0 +1,22 @@
+/* homepgae */
+.homepage {
+  background-color: #71c5ca;
+}
+/* Prodotti */
+.card-wrapper {
+  height: 100%;
+}
+
+.card-wrapper img {
+  height: 200px;
+  object-fit: contain;
+}
+/* loading */
+.layover {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
