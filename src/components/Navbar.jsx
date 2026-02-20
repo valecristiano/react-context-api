@@ -1,6 +1,18 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useBudget } from "../contexts/BudgetContext";
 
 export default function Navbar() {
+  const { budgetMode, setBudgetMode } = useBudget();
+
+  function buttonSetter() {
+    setBudgetMode((budgetMode) => !budgetMode);
+  }
+
+  function buttonSubmit(e) {
+    e.preventDefault();
+  }
+
   return (
     <header className="bg-light mb-3">
       <div className="container p-2">
@@ -21,7 +33,7 @@ export default function Navbar() {
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-              <div className="navbar-nav">
+              <div className="navbar-nav ">
                 <NavLink className="nav-link" aria-current="page" to="/">
                   Home
                 </NavLink>
@@ -32,6 +44,13 @@ export default function Navbar() {
                   Chi siamo
                 </NavLink>
               </div>
+
+              <form onSubmit={buttonSubmit} className="d-flex ms-auto gap-2">
+                <input type="number" />
+                <button onClick={buttonSetter} className={` btn ${budgetMode ? "btn-outline-success" : "btn-outline-danger"}`}>
+                  {budgetMode ? "Modalità Budget Attiva" : "Modalità Budget Disattiva"}
+                </button>
+              </form>
             </div>
           </div>
         </nav>
