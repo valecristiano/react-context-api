@@ -1,15 +1,28 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useBudget } from "../contexts/BudgetContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Navbar() {
+  //dati context per button filtro e dato prezzo
   const { budgetMode, setBudgetMode, maxPrice, setMaxPrice } = useBudget();
+
+  // hook per input in focus su location prodotti
+  const inputFocus = useRef(null);
+  const location = useLocation();
 
   //funzione onclick bottone
   function buttonSetter() {
     setBudgetMode((budgetMode) => !budgetMode);
   }
 
+  //funzione per focus
+  useEffect(() => {
+    if (location.pathname === "/prodotti") {
+      inputFocus.current?.focus();
+    }
+  }, [location.pathname]);
+
+  // funzione per pulire input
   useEffect(() => {
     if (!budgetMode) {
       setMaxPrice("");
@@ -47,12 +60,12 @@ export default function Navbar() {
                   Chi siamo
                 </NavLink>
               </div>
-
+              {/* form filtro */}
               <form onSubmit={(e) => e.preventDefault()} className="d-flex ms-auto gap-2">
                 <label className="form-label" htmlFor="filtro-prezzo">
                   Filtra per prezzo
                 </label>
-                <input id="filtro-prezzo" type="number" className="form-control" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+                <input ref={inputFocus} id="filtro-prezzo" type="number" className="form-control" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
                 <button onClick={buttonSetter} className={` btn ${budgetMode ? "btn-outline-success" : "btn-success"}`}>
                   {budgetMode ? "Torna indietro" : "Cerca prodotti"}
                 </button>
